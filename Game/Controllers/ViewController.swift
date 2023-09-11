@@ -8,6 +8,8 @@
 import UIKit
 
 let NAV_TO_PVP = "navToPvP"
+let NAV_TO_GAME = "navToGame"
+
 class ViewController: UIViewController {
 
     override func viewDidLoad() {

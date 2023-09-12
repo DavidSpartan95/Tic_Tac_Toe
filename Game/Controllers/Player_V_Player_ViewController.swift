@@ -21,8 +21,11 @@ class Player_V_Player_ViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == NAV_TO_GAME {
             if let destVC = segue.destination as? GameViewController {
-                destVC.playerXname = "David"
-                destVC.playerOname = "Linda"
+               
+                if txtPlayerX.text != "" && txtPlayerO.text != ""{
+                    destVC.playerXname = txtPlayerX.text
+                    destVC.playerOname = txtPlayerO.text
+                }
             }
         }
     }

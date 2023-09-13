@@ -22,8 +22,10 @@ class Player_V_Player_ViewController: UIViewController {
         if segue.identifier == NAV_TO_GAME {
             if let destVC = segue.destination as? GameViewController {
                
-                if txtPlayerX.text != "" && txtPlayerO.text != ""{
+                if txtPlayerX.text != ""{
                     destVC.playerXname = txtPlayerX.text
+                }
+                if txtPlayerO.text != ""{
                     destVC.playerOname = txtPlayerO.text
                 }
             }

@@ -17,43 +17,71 @@ class GameViewController: UIViewController {
     @IBOutlet weak var lblPlayerX: UILabel!
     @IBOutlet weak var lblPlayerO: UILabel!
     
-    //Board that remembers all the markers has been placed
-    var board = Array(repeating: marker.empty, count: 9)
     var playerXname: String?
     var playerOname: String?
-    var playerXturn = true
+    
+    let currentGame = Game(playerX: "PlayerX", playerO: "PlayerO",boardSize:9, playerXturn: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let playerXname = playerXname {
-            lblPlayerX.text = playerXname
+            currentGame.playerX = playerXname
+            lblPlayerX.text = currentGame.playerX
         }
         if let playerOname = playerOname {
-            lblPlayerO.text = playerOname
+            currentGame.playerO = playerOname
+            lblPlayerO.text = currentGame.playerO
         }
-    
     }
     
     @IBAction func tapOnBoard(_ sender: UITapGestureRecognizer) {
-        print(getTag(sender))
-        placeMarker(tag: getTag(sender), playerXturn: playerXturn)
-        playerXturn.toggle()
+        
+        
+        guard let tag = getTag(sender) else {return}
+        
+        if !currentGame.placementIsLegal(atIndex: tag){return}
+        print(tag)
+        boardImageViews[tag].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
+        
+        currentGame.placeMarker(tag: tag)
+        
+        if currentGame.winCondition(){
+            showResult(resultMsg: "\(currentGame.currentSymbol) WON")
+        }else if currentGame.boardIsFull(){
+            showResult(resultMsg: "DRAW")
+        }
     }
-    
-    func placeMarker(tag:Int, playerXturn: Bool){
-        let symbol = (playerXturn.self) ? marker.X : marker.O
-        let image = (symbol == marker.X) ? "xmark" : "circle"
-        guard tag >= 0 && tag < boardImageViews.count else { return }
-            boardImageViews[tag].image = UIImage(systemName: image)
-    }
-    
-    func getTag(_ tapGesture: UITapGestureRecognizer) -> Int{
+
+    func getTag(_ tapGesture: UITapGestureRecognizer) -> Int?{
         if let imageView = tapGesture.view as? UIImageView {
             let tag = imageView.tag
             return tag
         }
-        return -1
+        return nil
+    }
+    func resetGame(){
+        //remove all the images
+        for x in boardImageViews {x.image = nil}
+    }
+    
+    func showResult(resultMsg: String){
+        let alertController = UIAlertController(
+                title: "RESULT",
+                message: "\(resultMsg)",
+                preferredStyle: .alert
+            )
+            let okAction = UIAlertAction(
+                title: "OK",
+                style: .default,
+                handler: { _ in
+                    self.resetGame()
+                    self.currentGame.reset()
+                }
+            )
+            alertController.addAction(okAction)
+            // Present the alert
+            present(alertController, animated: true, completion: nil)
     }
     
 }

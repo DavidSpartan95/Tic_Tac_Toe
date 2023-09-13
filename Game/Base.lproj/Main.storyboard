@@ -215,7 +215,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Grl-Fh-Wpb">
                                 <rect key="frame" x="46.666666666666657" y="276" width="300" height="300"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="a1" image="xmark" translatesAutoresizingMaskIntoConstraints="NO" id="Auh-yK-089" userLabel="A1">
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="a1" translatesAutoresizingMaskIntoConstraints="NO" id="Auh-yK-089" userLabel="A1">
                                         <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                         <color key="backgroundColor" red="0.12549019607843137" green="0.33333333333333331" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" systemColor="linkColor"/>
@@ -359,21 +359,21 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bfr-SY-Qiw">
-                                <rect key="frame" x="165.33333333333334" y="235" width="62.333333333333343" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <rect key="frame" x="163" y="235" width="67" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" systemColor="systemBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player O" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MPT-wD-7O5">
-                                <rect key="frame" x="164.66666666666666" y="596" width="64" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <rect key="frame" x="162.66666666666666" y="596" width="68" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" systemColor="systemBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="TKa-9t-TXq"/>
-                        <color key="backgroundColor" systemColor="systemGray5Color"/>
-                        <color key="tintColor" systemColor="systemMintColor"/>
+                        <color key="backgroundColor" systemColor="systemMintColor"/>
+                        <color key="tintColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="bfr-SY-Qiw" firstAttribute="centerX" secondItem="mv1-az-4KQ" secondAttribute="centerX" id="5xP-qC-5hU"/>
                             <constraint firstItem="MPT-wD-7O5" firstAttribute="top" secondItem="Grl-Fh-Wpb" secondAttribute="bottom" constant="20" id="BH6-4q-64W"/>
@@ -467,7 +467,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="xmark" width="128" height="128"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

@@ -215,7 +215,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Grl-Fh-Wpb">
                                 <rect key="frame" x="46.666666666666657" y="276" width="300" height="300"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="a1" translatesAutoresizingMaskIntoConstraints="NO" id="Auh-yK-089">
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="a1" image="xmark" translatesAutoresizingMaskIntoConstraints="NO" id="Auh-yK-089" userLabel="A1">
                                         <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                         <color key="backgroundColor" red="0.12549019607843137" green="0.33333333333333331" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" systemColor="linkColor"/>
@@ -385,63 +385,63 @@
                     </view>
                     <navigationItem key="navigationItem" id="T2e-Ed-OxT"/>
                     <connections>
-                        <outlet property="A1" destination="Auh-yK-089" id="X3d-aF-1Cy"/>
-                        <outlet property="A2" destination="dLz-Hd-X74" id="SpN-F0-6nE"/>
-                        <outlet property="A3" destination="K6z-ex-op9" id="qbR-AP-u4j"/>
-                        <outlet property="B1" destination="r9e-Rx-23W" id="UeC-Jd-ZMv"/>
-                        <outlet property="B2" destination="a8y-LB-YU9" id="nPa-SM-nNg"/>
-                        <outlet property="B3" destination="ySt-aB-VC0" id="Ewq-9w-hcK"/>
-                        <outlet property="C1" destination="8a4-wB-98E" id="dOe-hS-OXA"/>
-                        <outlet property="C2" destination="OpP-bK-mye" id="04o-dU-hVo"/>
-                        <outlet property="C3" destination="Fr7-HU-FXc" id="lI0-D6-QfB"/>
                         <outlet property="lblPlayerO" destination="MPT-wD-7O5" id="ZmJ-PR-TTZ"/>
                         <outlet property="lblPlayerX" destination="bfr-SY-Qiw" id="DnF-xO-oX2"/>
+                        <outletCollection property="boardImageViews" destination="Auh-yK-089" collectionClass="NSMutableArray" id="5U5-EI-zhB"/>
+                        <outletCollection property="boardImageViews" destination="dLz-Hd-X74" collectionClass="NSMutableArray" id="rvP-cx-lpm"/>
+                        <outletCollection property="boardImageViews" destination="K6z-ex-op9" collectionClass="NSMutableArray" id="tJ5-nE-LQ2"/>
+                        <outletCollection property="boardImageViews" destination="r9e-Rx-23W" collectionClass="NSMutableArray" id="g9y-MH-RwP"/>
+                        <outletCollection property="boardImageViews" destination="a8y-LB-YU9" collectionClass="NSMutableArray" id="BGS-RW-RX1"/>
+                        <outletCollection property="boardImageViews" destination="ySt-aB-VC0" collectionClass="NSMutableArray" id="d9I-1B-Afw"/>
+                        <outletCollection property="boardImageViews" destination="8a4-wB-98E" collectionClass="NSMutableArray" id="PX4-Vt-QWu"/>
+                        <outletCollection property="boardImageViews" destination="OpP-bK-mye" collectionClass="NSMutableArray" id="X2h-Wr-nQl"/>
+                        <outletCollection property="boardImageViews" destination="Fr7-HU-FXc" collectionClass="NSMutableArray" id="Eys-6K-c3i"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NSs-Ou-KI5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="z1K-56-hHY" userLabel="TapA1">
                     <connections>
-                        <action selector="tapA1:" destination="kcI-Ie-bcf" id="bkx-c9-LRd"/>
+                        <action selector="tapOnBoard:" destination="kcI-Ie-bcf" id="oP5-V7-kyU"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="cx1-lc-NJu" userLabel="TapA2">
                     <connections>
-                        <action selector="tapA2:" destination="kcI-Ie-bcf" id="f2I-xw-V4k"/>
+                        <action selector="tapOnBoard:" destination="kcI-Ie-bcf" id="pYD-Iu-2Mg"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="FAg-gV-0mO" userLabel="TapA3">
                     <connections>
-                        <action selector="tapA3:" destination="kcI-Ie-bcf" id="onZ-lK-a0F"/>
+                        <action selector="tapOnBoard:" destination="kcI-Ie-bcf" id="D2g-tW-0Ld"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="uMp-gi-tjz" userLabel="TapB1">
                     <connections>
-                        <action selector="tapB1:" destination="kcI-Ie-bcf" id="cw4-OT-bqu"/>
+                        <action selector="tapOnBoard:" destination="kcI-Ie-bcf" id="A5A-xe-urk"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="4bz-a8-Mrt" userLabel="TapB2">
                     <connections>
-                        <action selector="tapB2:" destination="kcI-Ie-bcf" id="va2-r4-LkP"/>
+                        <action selector="tapOnBoard:" destination="kcI-Ie-bcf" id="jBo-2y-GD9"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="yPr-Lv-sFG" userLabel="TapB3">
                     <connections>
-                        <action selector="tapB3:" destination="kcI-Ie-bcf" id="BPd-NU-jvH"/>
+                        <action selector="tapOnBoard:" destination="kcI-Ie-bcf" id="fn6-fR-pt3"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="E9y-W2-dFF" userLabel="TapC1">
                     <connections>
-                        <action selector="tapC1:" destination="kcI-Ie-bcf" id="BzZ-FV-9xE"/>
+                        <action selector="tapOnBoard:" destination="kcI-Ie-bcf" id="0u9-EJ-kb9"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="ayY-yb-QAi" userLabel="TapC2">
                     <connections>
-                        <action selector="tapC2:" destination="kcI-Ie-bcf" id="sj3-Wt-qNc"/>
+                        <action selector="tapOnBoard:" destination="kcI-Ie-bcf" id="XMc-vL-vyi"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="iJu-se-Lqg" userLabel="TapC3">
                     <connections>
-                        <action selector="tapC3:" destination="kcI-Ie-bcf" id="qWG-TM-BW6"/>
+                        <action selector="tapOnBoard:" destination="kcI-Ie-bcf" id="lXn-sC-81U"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -467,6 +467,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="xmark" width="128" height="128"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

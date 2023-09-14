@@ -19,7 +19,7 @@ class Game:GameRules{
     var resultMSG: String = ""
     var CPUon: Bool = false
     //Board that remembers all the markers that has been placed
-    var board = Array(repeating: marker.empty, count: 9)
+    var board: [marker]
     
     init(playerX: String,playerO: String, boardSize: Int,playerXturn: Bool) {
         self.playerX = playerX
@@ -28,12 +28,23 @@ class Game:GameRules{
         self.playerXturn = playerXturn
         currentSymbol = (playerXturn) ? marker.X : marker.O
         playerXstart = playerXturn
+        board = Array(repeating: marker.empty, count: boardSize)
     }
     
     func isPlacementLegal(atIndex: Int) -> Bool {
         currentSymbol = (playerXturn) ? marker.X : marker.O
         return board[atIndex] == .empty
         
+    }
+    func CPUmove()-> Int{
+        while true {
+            let randomNum = Int(arc4random_uniform(UInt32(boardSize)))
+            print()
+            if isPlacementLegal(atIndex: randomNum){
+                placeMarker(tag: randomNum)
+                return randomNum
+            }
+        }
     }
     
     func placeMarker(tag: Int) {
@@ -43,17 +54,36 @@ class Game:GameRules{
     }
     
     func winCondition() -> Bool {
+        
+        let numberOfRows = boardSize / Int(sqrt(Double(boardSize)))
+        var tempLine = Array(repeating: marker.empty, count: numberOfRows)
+    
         //check horizontal
-        if board[0] == currentSymbol && board[1] == currentSymbol && board[2] == currentSymbol {return true}
-        if board[3] == currentSymbol && board[4] == currentSymbol && board[5] == currentSymbol {return true}
-        if board[6] == currentSymbol && board[7] == currentSymbol && board[8] == currentSymbol {return true}
-        //check horizontal
-        if board[0] == currentSymbol && board[3] == currentSymbol && board[6] == currentSymbol {return true}
-        if board[1] == currentSymbol && board[4] == currentSymbol && board[7] == currentSymbol {return true}
-        if board[2] == currentSymbol && board[5] == currentSymbol && board[8] == currentSymbol {return true}
-        //check diagenal
-        if board[0] == currentSymbol && board[4] == currentSymbol && board[8] == currentSymbol {return true}
-        if board[2] == currentSymbol && board[4] == currentSymbol && board[6] == currentSymbol {return true}
+        for i in 0..<numberOfRows{
+            for j in 0..<numberOfRows{
+                tempLine[j] = board[j+(numberOfRows*i)]
+            }
+            if (tempLine.allSatisfy { $0 == currentSymbol }) {return true}
+        }
+        //check vertical
+        for i in 0..<numberOfRows{
+            for j in 0..<numberOfRows{
+                tempLine[j] = board[j*numberOfRows+i]
+            }
+            if (tempLine.allSatisfy { $0 == currentSymbol }) {return true}
+        }
+        //check diagenal left to right
+        for j in 0..<numberOfRows{
+            
+            tempLine[j] = board[j*(numberOfRows)+j]
+        }
+        if (tempLine.allSatisfy { $0 == currentSymbol }) {return true}
+        //check diagenal right to left
+        for j in 0..<numberOfRows{
+            tempLine[j] = board[(numberOfRows-1)*(j+1)]
+        }
+        print(tempLine)
+        if (tempLine.allSatisfy { $0 == currentSymbol }) {return true}
         
         return false
     }

@@ -44,9 +44,16 @@ class GameViewController: UIViewController {
         boardImageViews[tag].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
         
         currentGame.placeMarker(tag: tag)
-
+        
         if currentGame.gameOver(){
             showResult()
+            return
+        }
+        if currentGame.CPUon{
+            boardImageViews[currentGame.CPUmove()].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
+            if currentGame.gameOver(){
+                showResult()
+            }
         }
     }
 

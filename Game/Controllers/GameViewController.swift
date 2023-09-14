@@ -37,19 +37,16 @@ class GameViewController: UIViewController {
     
     @IBAction func tapOnBoard(_ sender: UITapGestureRecognizer) {
         
-        
         guard let tag = getTag(sender) else {return}
         
-        if !currentGame.placementIsLegal(atIndex: tag){return}
-        print(tag)
+        if !currentGame.isPlacementLegal(atIndex: tag){return}
+        
         boardImageViews[tag].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
         
         currentGame.placeMarker(tag: tag)
-        
-        if currentGame.winCondition(){
-            showResult(resultMsg: "\(currentGame.currentSymbol) WON")
-        }else if currentGame.boardIsFull(){
-            showResult(resultMsg: "DRAW")
+
+        if currentGame.gameOver(){
+            showResult()
         }
     }
 
@@ -60,23 +57,19 @@ class GameViewController: UIViewController {
         }
         return nil
     }
-    func resetGame(){
-        //remove all the images
-        for x in boardImageViews {x.image = nil}
-    }
     
-    func showResult(resultMsg: String){
+    func showResult(){
         let alertController = UIAlertController(
                 title: "RESULT",
-                message: "\(resultMsg)",
+                message: currentGame.resultMSG,
                 preferredStyle: .alert
             )
             let okAction = UIAlertAction(
                 title: "OK",
                 style: .default,
                 handler: { _ in
-                    self.resetGame()
-                    self.currentGame.reset()
+                    //remove all the images when closing the Alert
+                    for x in self.boardImageViews {x.image = nil}
                 }
             )
             alertController.addAction(okAction)

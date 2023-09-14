@@ -16,7 +16,8 @@ class Game:GameRules{
     var playerO: String
     var currentSymbol: marker
     let playerXstart: Bool
-    
+    var resultMSG: String = ""
+    var CPUon: Bool = false
     //Board that remembers all the markers that has been placed
     var board = Array(repeating: marker.empty, count: 9)
     
@@ -27,6 +28,12 @@ class Game:GameRules{
         self.playerXturn = playerXturn
         currentSymbol = (playerXturn) ? marker.X : marker.O
         playerXstart = playerXturn
+    }
+    
+    func isPlacementLegal(atIndex: Int) -> Bool {
+        currentSymbol = (playerXturn) ? marker.X : marker.O
+        return board[atIndex] == .empty
+        
     }
     
     func placeMarker(tag: Int) {
@@ -50,19 +57,31 @@ class Game:GameRules{
         
         return false
     }
-    func placementIsLegal(atIndex: Int) -> Bool {
-        currentSymbol = (playerXturn) ? marker.X : marker.O
-        return board[atIndex] == .empty
-        
-    }
-    func boardIsFull() -> Bool {
+
+    func isBoardFull() -> Bool {
         for x in board {
             if x == .empty {return false}
         }
-        return true 
+        return true
+    }
+    
+    func gameOver() -> Bool {
+        if winCondition() {
+            resultMSG = (currentSymbol == marker.X) ? "\(playerX) WON" : "\(playerO) WON"
+            reset()
+            return true
+        } else if isBoardFull() {
+            resultMSG = "DRAW"
+            reset()
+            return true
+        } else {
+            return false
+        }
+        
     }
     func reset() {
         playerXturn = playerXstart
         board = Array(repeating: marker.empty, count: 9)
     }
+    
 }

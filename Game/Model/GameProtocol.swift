@@ -15,13 +15,13 @@ protocol GameRules {
     var boardSize: Int {get set}
     var board: [marker] {get set}
     
-    func winCondition()-> Bool
-    
-    func placementIsLegal(atIndex: Int) -> Bool
-    
-    func boardIsFull() -> Bool
+    func isPlacementLegal(atIndex: Int) -> Bool
     
     func placeMarker(tag: Int)
+    
+    func winCondition()-> Bool
+    
+    func isBoardFull() -> Bool
     
     func reset()
     

@@ -18,7 +18,9 @@ class Game:GameRules{
     let playerXstart: Bool
     var resultMSG: String = ""
     var CPUon: Bool = false
-    //Board that remembers all the markers that has been placed
+    var playerXscore = 0
+    var playerOscore = 0
+    //Board remembers all the markers that has been placed
     var board: [marker]
     
     init(playerX: String,playerO: String, boardSize: Int,playerXturn: Bool) {
@@ -39,7 +41,6 @@ class Game:GameRules{
     func CPUmove()-> Int{
         while true {
             let randomNum = Int(arc4random_uniform(UInt32(boardSize)))
-            print()
             if isPlacementLegal(atIndex: randomNum){
                 placeMarker(tag: randomNum)
                 return randomNum
@@ -55,35 +56,38 @@ class Game:GameRules{
     
     func winCondition() -> Bool {
         
-        let numberOfRows = boardSize / Int(sqrt(Double(boardSize)))
-        var tempLine = Array(repeating: marker.empty, count: numberOfRows)
+        let squaresPerRow = boardSize / Int(sqrt(Double(boardSize)))
+        /* tempRow will be filled to check if any of the horizotnal, verticals or diagenal rows
+         only cointains one type of marker (marker.X or marker.O) */
+        var tempRow = Array(repeating: marker.empty, count: squaresPerRow)
     
         //check horizontal
-        for i in 0..<numberOfRows{
-            for j in 0..<numberOfRows{
-                tempLine[j] = board[j+(numberOfRows*i)]
+        for i in 0..<squaresPerRow{
+            for j in 0..<squaresPerRow{
+                tempRow[j] = board[j+(squaresPerRow*i)]
             }
-            if (tempLine.allSatisfy { $0 == currentSymbol }) {return true}
+            if (tempRow.allSatisfy { $0 == currentSymbol }) {return true}
         }
+        
         //check vertical
-        for i in 0..<numberOfRows{
-            for j in 0..<numberOfRows{
-                tempLine[j] = board[j*numberOfRows+i]
+        for i in 0..<squaresPerRow{
+            for j in 0..<squaresPerRow{
+                tempRow[j] = board[j*squaresPerRow+i]
             }
-            if (tempLine.allSatisfy { $0 == currentSymbol }) {return true}
+            if (tempRow.allSatisfy { $0 == currentSymbol }) {return true}
         }
+        
         //check diagenal left to right
-        for j in 0..<numberOfRows{
-            
-            tempLine[j] = board[j*(numberOfRows)+j]
+        for j in 0..<squaresPerRow{
+            tempRow[j] = board[j*(squaresPerRow)+j]
         }
-        if (tempLine.allSatisfy { $0 == currentSymbol }) {return true}
+        if (tempRow.allSatisfy { $0 == currentSymbol }) {return true}
+        
         //check diagenal right to left
-        for j in 0..<numberOfRows{
-            tempLine[j] = board[(numberOfRows-1)*(j+1)]
+        for j in 0..<squaresPerRow{
+            tempRow[j] = board[(squaresPerRow-1)*(j+1)]
         }
-        print(tempLine)
-        if (tempLine.allSatisfy { $0 == currentSymbol }) {return true}
+        if (tempRow.allSatisfy { $0 == currentSymbol }) {return true}
         
         return false
     }
@@ -98,6 +102,7 @@ class Game:GameRules{
     func gameOver() -> Bool {
         if winCondition() {
             resultMSG = (currentSymbol == marker.X) ? "\(playerX) WON" : "\(playerO) WON"
+            (playerXscore, playerOscore) = (currentSymbol == marker.X) ? (playerXscore + 1, playerOscore) : (playerXscore, playerOscore + 1)
             reset()
             return true
         } else if isBoardFull() {

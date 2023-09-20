@@ -7,15 +7,19 @@
 
 import UIKit
 let NAV_TO_GAME_FROM_CPU = "navToGameFromCPU"
+let NAV_TO_4x4_GAME = "toHardGame"
 class Player_V_CPU_ViewController: UIViewController {
     @IBOutlet weak var txtFiledName: UITextField!
     
+    @IBOutlet weak var hardModeSwitch: UISwitch!
     override func viewDidLoad() {
         super.viewDidLoad()
+        hardModeSwitch.isOn = false
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == NAV_TO_GAME_FROM_CPU {
             if let destVC = segue.destination as? GameViewController {
                
@@ -23,6 +27,9 @@ class Player_V_CPU_ViewController: UIViewController {
                     destVC.playerXname = txtFiledName.text
                 }
                 destVC.currentGame.CPUon = true
+                /*if txtPlayerO.text != ""{
+                    destVC.playerOname = txtPlayerO.text
+                }*/
             }
         }
     }

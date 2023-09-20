@@ -38,7 +38,8 @@ class Game:GameRules{
         return board[atIndex] == .empty
         
     }
-    func CPUmove()-> Int{
+    // place a marker at random
+    func CPUplaceRandom()-> Int{
         while true {
             let randomNum = Int(arc4random_uniform(UInt32(boardSize)))
             if isPlacementLegal(atIndex: randomNum){
@@ -47,9 +48,257 @@ class Game:GameRules{
             }
         }
     }
+    // place a marker not at random
+    func CPUplace()-> Int{
+        
+        var move = winingMove()
+        print("MOVE is:\(move)")
+        if move != nil {
+            print("WINING MOVE")
+            return move!
+        }
+        move = blockPlayer()
+        if move != nil {
+            return move!
+        }
+        var placeRandom: Int?
+        while true {
+            let randomNum = Int(arc4random_uniform(UInt32(boardSize)))
+            if isPlacementLegal(atIndex: randomNum){
+                placeRandom = randomNum
+                break
+            }
+        }
+        currentSymbol = (playerXturn) ? marker.X : marker.O
+        placeMarker(tag: placeRandom!)
+        return placeRandom!
+    }
+    
+    func blockPlayer()-> Int? {
+        let squaresPerRow = boardSize / Int(sqrt(Double(boardSize)))
+        /*
+           `tempRow` is a temporary container used to analyze rows (horizontal, vertical, or diagonal)
+           to determine if they contain only a single type of marker (marker.X or marker.O).
+        */
+        var tempRow = Array(repeating: marker.empty, count: squaresPerRow)
+        var wereOnBoard: [Int] = []
+    
+        //check horizontal
+        for i in 0..<squaresPerRow{
+            for j in 0..<squaresPerRow{
+                tempRow[j] = board[j+(squaresPerRow*i)]
+                wereOnBoard.append(j+(squaresPerRow*i))
+            }
+            //var numOfempty = 0
+            var numOfCurretSymbol = 0
+            var emptySpot: Int?
+            for (index, x) in tempRow.enumerated() {
+                if x == .empty {
+                    //numOfempty += 1
+                    emptySpot = index
+                }else if x == currentSymbol {
+                    numOfCurretSymbol += 1
+                }
+            }
+            if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
+                print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
+                currentSymbol = (playerXturn) ? marker.X : marker.O
+                placeMarker(tag: wereOnBoard[emptySpot!])
+                return wereOnBoard[emptySpot!]
+            }
+            wereOnBoard = []
+        }
+        
+        //check vertical
+        for i in 0..<squaresPerRow{
+            for j in 0..<squaresPerRow{
+                tempRow[j] = board[j*squaresPerRow+i]
+                wereOnBoard.append(j*squaresPerRow+i)
+            }
+            var numOfCurretSymbol = 0
+            var emptySpot: Int?
+            for (index, x) in tempRow.enumerated() {
+                if x == .empty {
+                    //numOfempty += 1
+                    emptySpot = index
+                }else if x == currentSymbol {
+                    numOfCurretSymbol += 1
+                }
+            }
+            if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
+                print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
+                currentSymbol = (playerXturn) ? marker.X : marker.O
+                placeMarker(tag: wereOnBoard[emptySpot!])
+                return wereOnBoard[emptySpot!]
+            }
+            wereOnBoard = []
+        }
+        //check diagenal left to right
+        for i in 0..<squaresPerRow{
+            tempRow[i] = board[i*(squaresPerRow)+i]
+            wereOnBoard.append(i*(squaresPerRow)+i)
+        }
+        var numOfCurretSymbol = 0
+        var emptySpot: Int?
+        for (index, x) in tempRow.enumerated() {
+            if x == .empty {
+                //numOfempty += 1
+                emptySpot = index
+            }else if x == currentSymbol {
+                numOfCurretSymbol += 1
+            }
+        }
+        if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
+            print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
+            currentSymbol = (playerXturn) ? marker.X : marker.O
+            placeMarker(tag: wereOnBoard[emptySpot!])
+            return wereOnBoard[emptySpot!]
+        }
+        wereOnBoard = []
+        
+        //check diagenal right to left
+        for i in 0..<squaresPerRow{
+            tempRow[i] = board[(squaresPerRow-1)*(i+1)]
+            wereOnBoard.append((squaresPerRow-1)*(i+1))
+        }
+        numOfCurretSymbol = 0
+        emptySpot = nil
+        for (index, x) in tempRow.enumerated() {
+            if x == .empty {
+                //numOfempty += 1
+                emptySpot = index
+            }else if x == currentSymbol {
+                numOfCurretSymbol += 1
+            }
+        }
+        if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
+            print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
+            currentSymbol = (playerXturn) ? marker.X : marker.O
+            placeMarker(tag: wereOnBoard[emptySpot!])
+            return wereOnBoard[emptySpot!]
+        }
+        return nil
+    }
+    
+    func winingMove()-> Int? {
+        var CPUmarker = marker.empty
+       if playerXturn {
+           print("DDDD")
+             CPUmarker = marker.X
+        }else{
+            print("SSSS")
+             CPUmarker = marker.O
+        }
+       
+        let squaresPerRow = boardSize / Int(sqrt(Double(boardSize)))
+        /*
+           `tempRow` is a temporary container used to analyze rows (horizontal, vertical, or diagonal)
+           to determine if they contain only a single type of marker (marker.X or marker.O).
+        */
+        var tempRow = Array(repeating: marker.empty, count: squaresPerRow)
+        var wereOnBoard: [Int] = []
+    
+        //check horizontal
+        for i in 0..<squaresPerRow{
+            for j in 0..<squaresPerRow{
+                tempRow[j] = board[j+(squaresPerRow*i)]
+                wereOnBoard.append(j+(squaresPerRow*i))
+            }
+            //var numOfempty = 0
+            var numOfCurretSymbol = 0
+            var emptySpot: Int?
+            for (index, x) in tempRow.enumerated() {
+                if x == .empty {
+                    //numOfempty += 1
+                    emptySpot = index
+                }else if x == CPUmarker {
+                    numOfCurretSymbol += 1
+                }
+            }
+            if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
+                print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
+                currentSymbol = (playerXturn) ? marker.X : marker.O
+                placeMarker(tag: wereOnBoard[emptySpot!])
+                return wereOnBoard[emptySpot!]
+            }
+            wereOnBoard = []
+        }
+        
+        //check vertical
+        for i in 0..<squaresPerRow{
+            for j in 0..<squaresPerRow{
+                tempRow[j] = board[j*squaresPerRow+i]
+                wereOnBoard.append(j*squaresPerRow+i)
+            }
+            var numOfCurretSymbol = 0
+            var emptySpot: Int?
+            for (index, x) in tempRow.enumerated() {
+                if x == .empty {
+                    //numOfempty += 1
+                    emptySpot = index
+                }else if x == CPUmarker {
+                    numOfCurretSymbol += 1
+                }
+            }
+            if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
+                print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
+                currentSymbol = (playerXturn) ? marker.X : marker.O
+                placeMarker(tag: wereOnBoard[emptySpot!])
+                return wereOnBoard[emptySpot!]
+            }
+            wereOnBoard = []
+        }
+        //check diagenal left to right
+        for i in 0..<squaresPerRow{
+            tempRow[i] = board[i*(squaresPerRow)+i]
+            wereOnBoard.append(i*(squaresPerRow)+i)
+        }
+        var numOfCurretSymbol = 0
+        var emptySpot: Int?
+        for (index, x) in tempRow.enumerated() {
+            if x == .empty {
+                //numOfempty += 1
+                emptySpot = index
+            }else if x == CPUmarker {
+                numOfCurretSymbol += 1
+            }
+        }
+        if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
+            print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
+            currentSymbol = (playerXturn) ? marker.X : marker.O
+            placeMarker(tag: wereOnBoard[emptySpot!])
+            return wereOnBoard[emptySpot!]
+        }
+        wereOnBoard = []
+        
+        //check diagenal right to left
+        for i in 0..<squaresPerRow{
+            tempRow[i] = board[(squaresPerRow-1)*(i+1)]
+            wereOnBoard.append((squaresPerRow-1)*(i+1))
+        }
+        numOfCurretSymbol = 0
+        emptySpot = nil
+        for (index, x) in tempRow.enumerated() {
+            if x == .empty {
+                //numOfempty += 1
+                emptySpot = index
+            }else if x == CPUmarker {
+                numOfCurretSymbol += 1
+            }
+        }
+        if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
+            print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
+            currentSymbol = (playerXturn) ? marker.X : marker.O
+            placeMarker(tag: wereOnBoard[emptySpot!])
+            return wereOnBoard[emptySpot!]
+        }
+        return nil
+    }
+    
     
     func placeMarker(tag: Int) {
-        guard tag >= 0 && tag < boardSize else { return }
+        guard tag >= 0 && tag < boardSize else {return}
+        print(tag)
         board[tag] = currentSymbol
         playerXturn.toggle()
     }
@@ -57,8 +306,10 @@ class Game:GameRules{
     func winCondition() -> Bool {
         
         let squaresPerRow = boardSize / Int(sqrt(Double(boardSize)))
-        /* tempRow will be filled to check if any of the horizotnal, verticals or diagenal rows
-         only cointains one type of marker (marker.X or marker.O) */
+        /*
+           `tempRow` is a temporary container used to analyze rows (horizontal, vertical, or diagonal)
+           to determine if they contain only a single type of marker (marker.X or marker.O).
+        */
         var tempRow = Array(repeating: marker.empty, count: squaresPerRow)
     
         //check horizontal
@@ -116,7 +367,7 @@ class Game:GameRules{
     }
     func reset() {
         playerXturn = playerXstart
-        board = Array(repeating: marker.empty, count: 9)
+        board = Array(repeating: marker.empty, count: boardSize)
     }
     
 }

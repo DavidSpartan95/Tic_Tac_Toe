@@ -62,14 +62,17 @@ class GameViewController: UIViewController {
         currentGame.placeMarker(tag: tag)
         //show result in an Alert if win condition has been meet
         updateTurnIndicator(playerXturn: currentGame.playerXturn)
+        
         if currentGame.gameOver(){
             showResult()
             return
         }
         //If CPU (player vs CPU) has been selected the CPU will place next marker
         if currentGame.CPUon{
-            boardImageViews[currentGame.CPUmove()].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
-            updateTurnIndicator(playerXturn: currentGame.playerXturn)
+            //CPUmove will place a marker and return an Int to indicate were it placed the marker
+            let CPU_MARKER = currentGame.CPUplace()
+            boardImageViews[CPU_MARKER].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
+            
             if currentGame.gameOver(){
                 showResult()
             }

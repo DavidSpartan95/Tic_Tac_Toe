@@ -52,9 +52,8 @@ class Game:GameRules{
     func CPUplace()-> Int{
         
         var move = winingMove()
-        print("MOVE is:\(move)")
+        print("WINING move is:\(move)")
         if move != nil {
-            print("WINING MOVE")
             return move!
         }
         move = blockPlayer()
@@ -74,226 +73,159 @@ class Game:GameRules{
         return placeRandom!
     }
     
-    func blockPlayer()-> Int? {
+    func blockPlayer() -> Int? {
         let squaresPerRow = boardSize / Int(sqrt(Double(boardSize)))
-        /*
-           `tempRow` is a temporary container used to analyze rows (horizontal, vertical, or diagonal)
-           to determine if they contain only a single type of marker (marker.X or marker.O).
-        */
-        var tempRow = Array(repeating: marker.empty, count: squaresPerRow)
-        var wereOnBoard: [Int] = []
-    
-        //check horizontal
-        for i in 0..<squaresPerRow{
-            for j in 0..<squaresPerRow{
-                tempRow[j] = board[j+(squaresPerRow*i)]
-                wereOnBoard.append(j+(squaresPerRow*i))
+        
+        func checkRow(_ indices: [Int]) -> Int? {
+            var tempRow = [marker]()
+            for index in indices {
+                tempRow.append(board[index])
             }
-            //var numOfempty = 0
-            var numOfCurretSymbol = 0
+            
+            var numOfCurrentSymbol = 0
             var emptySpot: Int?
+            
             for (index, x) in tempRow.enumerated() {
                 if x == .empty {
-                    //numOfempty += 1
                     emptySpot = index
-                }else if x == currentSymbol {
-                    numOfCurretSymbol += 1
+                } else if x == currentSymbol {
+                    numOfCurrentSymbol += 1
                 }
             }
-            if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
-                print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
-                currentSymbol = (playerXturn) ? marker.X : marker.O
-                placeMarker(tag: wereOnBoard[emptySpot!])
-                return wereOnBoard[emptySpot!]
+            
+            if numOfCurrentSymbol == squaresPerRow - 1, let spot = emptySpot {
+                let tag = indices[spot]
+                print("2 In a ROW! place at \(tag)")
+                currentSymbol = playerXturn ? marker.X : marker.O
+                placeMarker(tag: tag)
+                return tag
             }
-            wereOnBoard = []
+            
+            return nil
         }
         
-        //check vertical
-        for i in 0..<squaresPerRow{
-            for j in 0..<squaresPerRow{
-                tempRow[j] = board[j*squaresPerRow+i]
-                wereOnBoard.append(j*squaresPerRow+i)
+        // Check horizontal and vertical rows
+        var wereOnBoard = [Int]()
+        for i in 0..<squaresPerRow {
+            var horizontalIndices = [Int]()
+            var verticalIndices = [Int]()
+            
+            for j in 0..<squaresPerRow {
+                horizontalIndices.append(j + (squaresPerRow * i))
+                verticalIndices.append(j * squaresPerRow + i)
             }
-            var numOfCurretSymbol = 0
-            var emptySpot: Int?
-            for (index, x) in tempRow.enumerated() {
-                if x == .empty {
-                    //numOfempty += 1
-                    emptySpot = index
-                }else if x == currentSymbol {
-                    numOfCurretSymbol += 1
-                }
+            
+            if let tag = checkRow(horizontalIndices) {
+                return tag
             }
-            if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
-                print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
-                currentSymbol = (playerXturn) ? marker.X : marker.O
-                placeMarker(tag: wereOnBoard[emptySpot!])
-                return wereOnBoard[emptySpot!]
-            }
-            wereOnBoard = []
-        }
-        //check diagenal left to right
-        for i in 0..<squaresPerRow{
-            tempRow[i] = board[i*(squaresPerRow)+i]
-            wereOnBoard.append(i*(squaresPerRow)+i)
-        }
-        var numOfCurretSymbol = 0
-        var emptySpot: Int?
-        for (index, x) in tempRow.enumerated() {
-            if x == .empty {
-                //numOfempty += 1
-                emptySpot = index
-            }else if x == currentSymbol {
-                numOfCurretSymbol += 1
+            
+            if let tag = checkRow(verticalIndices) {
+                return tag
             }
         }
-        if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
-            print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
-            currentSymbol = (playerXturn) ? marker.X : marker.O
-            placeMarker(tag: wereOnBoard[emptySpot!])
-            return wereOnBoard[emptySpot!]
-        }
-        wereOnBoard = []
         
-        //check diagenal right to left
-        for i in 0..<squaresPerRow{
-            tempRow[i] = board[(squaresPerRow-1)*(i+1)]
-            wereOnBoard.append((squaresPerRow-1)*(i+1))
+        // Check diagonal left to right
+        var diagonalIndicesLR = [Int]()
+        for i in 0..<squaresPerRow {
+            diagonalIndicesLR.append(i * (squaresPerRow + 1))
         }
-        numOfCurretSymbol = 0
-        emptySpot = nil
-        for (index, x) in tempRow.enumerated() {
-            if x == .empty {
-                //numOfempty += 1
-                emptySpot = index
-            }else if x == currentSymbol {
-                numOfCurretSymbol += 1
-            }
+        
+        if let tag = checkRow(diagonalIndicesLR) {
+            return tag
         }
-        if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
-            print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
-            currentSymbol = (playerXturn) ? marker.X : marker.O
-            placeMarker(tag: wereOnBoard[emptySpot!])
-            return wereOnBoard[emptySpot!]
+        
+        // Check diagonal right to left
+        var diagonalIndicesRL = [Int]()
+        for i in 0..<squaresPerRow {
+            diagonalIndicesRL.append((squaresPerRow - 1) * (i + 1))
         }
+        
+        if let tag = checkRow(diagonalIndicesRL) {
+            return tag
+        }
+        
         return nil
     }
+
     
-    func winingMove()-> Int? {
-        var CPUmarker = marker.empty
-       if playerXturn {
-           print("DDDD")
-             CPUmarker = marker.X
-        }else{
-            print("SSSS")
-             CPUmarker = marker.O
-        }
-       
+    func winingMove() -> Int? {
         let squaresPerRow = boardSize / Int(sqrt(Double(boardSize)))
-        /*
-           `tempRow` is a temporary container used to analyze rows (horizontal, vertical, or diagonal)
-           to determine if they contain only a single type of marker (marker.X or marker.O).
-        */
-        var tempRow = Array(repeating: marker.empty, count: squaresPerRow)
-        var wereOnBoard: [Int] = []
-    
-        //check horizontal
-        for i in 0..<squaresPerRow{
-            for j in 0..<squaresPerRow{
-                tempRow[j] = board[j+(squaresPerRow*i)]
-                wereOnBoard.append(j+(squaresPerRow*i))
+        
+        let CPUmarker: marker = playerXturn ? marker.X : marker.O
+        
+        func checkRow(_ indices: [Int]) -> Int? {
+            var tempRow = [marker]()
+            var wereOnBoard = [Int]()
+            
+            for index in indices {
+                tempRow.append(board[index])
+                wereOnBoard.append(index)
             }
-            //var numOfempty = 0
-            var numOfCurretSymbol = 0
+            
+            var numOfCurrentSymbol = 0
             var emptySpot: Int?
+            
             for (index, x) in tempRow.enumerated() {
                 if x == .empty {
-                    //numOfempty += 1
                     emptySpot = index
-                }else if x == CPUmarker {
-                    numOfCurretSymbol += 1
+                } else if x == CPUmarker {
+                    numOfCurrentSymbol += 1
                 }
             }
-            if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
-                print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
-                currentSymbol = (playerXturn) ? marker.X : marker.O
-                placeMarker(tag: wereOnBoard[emptySpot!])
-                return wereOnBoard[emptySpot!]
+            
+            if numOfCurrentSymbol == squaresPerRow - 1, let spot = emptySpot {
+                let tag = wereOnBoard[spot]
+                print("2 In a ROW! place at \(tag)")
+                currentSymbol = playerXturn ? marker.X : marker.O
+                placeMarker(tag: tag)
+                return tag
             }
-            wereOnBoard = []
+            
+            return nil
         }
         
-        //check vertical
-        for i in 0..<squaresPerRow{
-            for j in 0..<squaresPerRow{
-                tempRow[j] = board[j*squaresPerRow+i]
-                wereOnBoard.append(j*squaresPerRow+i)
+        // Check horizontal and vertical rows
+        for i in 0..<squaresPerRow {
+            var horizontalIndices = [Int]()
+            var verticalIndices = [Int]()
+            
+            for j in 0..<squaresPerRow {
+                horizontalIndices.append(j + (squaresPerRow * i))
+                verticalIndices.append(j * squaresPerRow + i)
             }
-            var numOfCurretSymbol = 0
-            var emptySpot: Int?
-            for (index, x) in tempRow.enumerated() {
-                if x == .empty {
-                    //numOfempty += 1
-                    emptySpot = index
-                }else if x == CPUmarker {
-                    numOfCurretSymbol += 1
-                }
+            
+            if let tag = checkRow(horizontalIndices) {
+                return tag
             }
-            if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
-                print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
-                currentSymbol = (playerXturn) ? marker.X : marker.O
-                placeMarker(tag: wereOnBoard[emptySpot!])
-                return wereOnBoard[emptySpot!]
-            }
-            wereOnBoard = []
-        }
-        //check diagenal left to right
-        for i in 0..<squaresPerRow{
-            tempRow[i] = board[i*(squaresPerRow)+i]
-            wereOnBoard.append(i*(squaresPerRow)+i)
-        }
-        var numOfCurretSymbol = 0
-        var emptySpot: Int?
-        for (index, x) in tempRow.enumerated() {
-            if x == .empty {
-                //numOfempty += 1
-                emptySpot = index
-            }else if x == CPUmarker {
-                numOfCurretSymbol += 1
+            
+            if let tag = checkRow(verticalIndices) {
+                return tag
             }
         }
-        if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
-            print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
-            currentSymbol = (playerXturn) ? marker.X : marker.O
-            placeMarker(tag: wereOnBoard[emptySpot!])
-            return wereOnBoard[emptySpot!]
-        }
-        wereOnBoard = []
         
-        //check diagenal right to left
-        for i in 0..<squaresPerRow{
-            tempRow[i] = board[(squaresPerRow-1)*(i+1)]
-            wereOnBoard.append((squaresPerRow-1)*(i+1))
+        // Check diagonal left to right
+        var diagonalIndicesLR = [Int]()
+        for i in 0..<squaresPerRow {
+            diagonalIndicesLR.append(i * (squaresPerRow + 1))
         }
-        numOfCurretSymbol = 0
-        emptySpot = nil
-        for (index, x) in tempRow.enumerated() {
-            if x == .empty {
-                //numOfempty += 1
-                emptySpot = index
-            }else if x == CPUmarker {
-                numOfCurretSymbol += 1
-            }
+        
+        if let tag = checkRow(diagonalIndicesLR) {
+            return tag
         }
-        if (numOfCurretSymbol == squaresPerRow-1 && emptySpot != nil) {
-            print("2 In a ROW! place at \(wereOnBoard[emptySpot!])")
-            currentSymbol = (playerXturn) ? marker.X : marker.O
-            placeMarker(tag: wereOnBoard[emptySpot!])
-            return wereOnBoard[emptySpot!]
+        
+        // Check diagonal right to left
+        var diagonalIndicesRL = [Int]()
+        for i in 0..<squaresPerRow {
+            diagonalIndicesRL.append((squaresPerRow - 1) * (i + 1))
         }
+        
+        if let tag = checkRow(diagonalIndicesRL) {
+            return tag
+        }
+        
         return nil
     }
+
     
     
     func placeMarker(tag: Int) {
@@ -304,12 +236,9 @@ class Game:GameRules{
     }
     
     func winCondition() -> Bool {
-        
         let squaresPerRow = boardSize / Int(sqrt(Double(boardSize)))
-        /*
-           `tempRow` is a temporary container used to analyze rows (horizontal, vertical, or diagonal)
-           to determine if they contain only a single type of marker (marker.X or marker.O).
-        */
+        /*`tempRow` is a temporary container used to analyze rows (horizontal, vertical, or diagonal)
+           to determine if they contain only a single type of marker (marker.X or marker.O).*/
         var tempRow = Array(repeating: marker.empty, count: squaresPerRow)
     
         //check horizontal

@@ -72,7 +72,7 @@ class GameViewController: UIViewController {
             //CPUmove will place a marker and return an Int to indicate were it placed the marker
             let CPU_MARKER = currentGame.CPUplace()
             boardImageViews[CPU_MARKER].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
-            
+            updateTurnIndicator(playerXturn: currentGame.playerXturn)
             if currentGame.gameOver(){
                 showResult()
             }

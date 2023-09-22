@@ -48,15 +48,20 @@ class Game:GameRules{
             }
         }
     }
-    // place a marker not at random
+    
     func CPUplace()-> Int{
+        let playerMarker:marker = playerXturn ? marker.O : marker.X
+        let CPUmarker: marker = playerXturn ? marker.X : marker.O
         
-        var move = winingMove()
-        print("WINING move is:\(move)")
+        //check if CPU can win
+        var move = oneMarkerAwayCheck(checkMarker: CPUmarker)
+
         if move != nil {
+            placeMarker(tag: move!)
             return move!
         }
-        move = blockPlayer()
+        // check if player is 1 maker away from wining, if so block it!
+        move = oneMarkerAwayCheck(checkMarker: playerMarker)
         if move != nil {
             return move!
         }
@@ -73,7 +78,7 @@ class Game:GameRules{
         return placeRandom!
     }
     
-    func blockPlayer() -> Int? {
+    func oneMarkerAwayCheck(checkMarker: marker) -> Int? {
         let squaresPerRow = boardSize / Int(sqrt(Double(boardSize)))
         
         func checkRow(_ indices: [Int]) -> Int? {
@@ -88,7 +93,7 @@ class Game:GameRules{
             for (index, x) in tempRow.enumerated() {
                 if x == .empty {
                     emptySpot = index
-                } else if x == currentSymbol {
+                } else if x == checkMarker {
                     numOfCurrentSymbol += 1
                 }
             }
@@ -146,91 +151,9 @@ class Game:GameRules{
         
         return nil
     }
-
-    
-    func winingMove() -> Int? {
-        let squaresPerRow = boardSize / Int(sqrt(Double(boardSize)))
-        
-        let CPUmarker: marker = playerXturn ? marker.X : marker.O
-        
-        func checkRow(_ indices: [Int]) -> Int? {
-            var tempRow = [marker]()
-            var wereOnBoard = [Int]()
-            
-            for index in indices {
-                tempRow.append(board[index])
-                wereOnBoard.append(index)
-            }
-            
-            var numOfCurrentSymbol = 0
-            var emptySpot: Int?
-            
-            for (index, x) in tempRow.enumerated() {
-                if x == .empty {
-                    emptySpot = index
-                } else if x == CPUmarker {
-                    numOfCurrentSymbol += 1
-                }
-            }
-            
-            if numOfCurrentSymbol == squaresPerRow - 1, let spot = emptySpot {
-                let tag = wereOnBoard[spot]
-                print("2 In a ROW! place at \(tag)")
-                currentSymbol = playerXturn ? marker.X : marker.O
-                placeMarker(tag: tag)
-                return tag
-            }
-            
-            return nil
-        }
-        
-        // Check horizontal and vertical rows
-        for i in 0..<squaresPerRow {
-            var horizontalIndices = [Int]()
-            var verticalIndices = [Int]()
-            
-            for j in 0..<squaresPerRow {
-                horizontalIndices.append(j + (squaresPerRow * i))
-                verticalIndices.append(j * squaresPerRow + i)
-            }
-            
-            if let tag = checkRow(horizontalIndices) {
-                return tag
-            }
-            
-            if let tag = checkRow(verticalIndices) {
-                return tag
-            }
-        }
-        
-        // Check diagonal left to right
-        var diagonalIndicesLR = [Int]()
-        for i in 0..<squaresPerRow {
-            diagonalIndicesLR.append(i * (squaresPerRow + 1))
-        }
-        
-        if let tag = checkRow(diagonalIndicesLR) {
-            return tag
-        }
-        
-        // Check diagonal right to left
-        var diagonalIndicesRL = [Int]()
-        for i in 0..<squaresPerRow {
-            diagonalIndicesRL.append((squaresPerRow - 1) * (i + 1))
-        }
-        
-        if let tag = checkRow(diagonalIndicesRL) {
-            return tag
-        }
-        
-        return nil
-    }
-
-    
     
     func placeMarker(tag: Int) {
         guard tag >= 0 && tag < boardSize else {return}
-        print(tag)
         board[tag] = currentSymbol
         playerXturn.toggle()
     }

@@ -12,7 +12,9 @@ class _x4GameViewController: UIViewController {
     @IBOutlet var boardImages: [UIImageView]!
     
     @IBOutlet weak var lblScoreX: UILabel!
-@IBOutlet weak var lblScoreO: UILabel!
+    @IBOutlet weak var lblScoreO: UILabel!
+    
+    var hardMode: Bool = false
     
     let currentGame = Game(playerX: "PlayerX", playerO: "PlayerO",boardSize:16, playerXturn: true)
     
@@ -40,8 +42,8 @@ class _x4GameViewController: UIViewController {
         //If CPU (player vs CPU) has been selected the CPU will place next marker
         if currentGame.CPUon{
             //CPUmove will place a marker and return an Int to indicate were it placed the marker
-            let CPU_MARKER = currentGame.CPUplaceRandom()
-            boardImages[CPU_MARKER].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
+            let CPU_PLACEMENT = hardMode ? currentGame.CPUplace() : currentGame.CPUplaceRandom()
+            boardImages[CPU_PLACEMENT].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
             
             if currentGame.gameOver(){
                 showResult()

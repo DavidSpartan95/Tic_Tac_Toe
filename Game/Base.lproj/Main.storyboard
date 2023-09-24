@@ -16,11 +16,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GAME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2be-RG-j6L">
-                                <rect key="frame" x="172.66666666666666" y="109" width="48" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" systemColor="tintColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tic Tac Toe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2be-RG-j6L">
+                                <rect key="frame" x="105.33333333333333" y="109" width="182.33333333333337" height="43"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="vKO-Bf-f5q">
@@ -29,7 +28,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VH7-jw-Wxh">
                                         <rect key="frame" x="0.0" y="0.0" width="143" height="34.333333333333336"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Player vs Player"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Player vs Player">
+                                            <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
                                         <connections>
                                             <action selector="onPvPclick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="acx-81-kf1"/>
                                             <segue destination="3qE-YH-9kg" kind="show" identifier="navToPvP" id="rAK-Mg-htj"/>
@@ -38,7 +39,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6hD-Wc-UxN">
                                         <rect key="frame" x="0.0" y="54.333333333333314" width="143" height="34.333333333333343"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Player vs CPU"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Player vs CPU">
+                                            <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
                                         <connections>
                                             <action selector="onPvEclick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PfX-o6-kOV"/>
                                             <segue destination="gfG-dQ-If6" kind="show" identifier="navToPvE" id="zOy-iG-f7Q"/>
@@ -48,11 +51,13 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemGray5Color"/>
-                        <color key="tintColor" systemColor="systemMintColor"/>
+                        <color key="backgroundColor" systemColor="systemMintColor"/>
+                        <color key="tintColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="2be-RG-j6L" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="6" id="SQH-E2-tSc"/>
                             <constraint firstItem="vKO-Bf-f5q" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Xaf-YS-JEL"/>
                             <constraint firstItem="vKO-Bf-f5q" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="bb5-JR-ctF"/>
+                            <constraint firstItem="2be-RG-j6L" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="g0G-UL-vQb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6k7-yi-I9o"/>
@@ -200,7 +205,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Play (4x4)"/>
                                         <connections>
-                                            <segue destination="YZf-3o-Ufm" kind="show" id="NEE-Dg-E5j"/>
+                                            <segue destination="YZf-3o-Ufm" kind="show" identifier="to4x4Game" id="NEE-Dg-E5j"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -970,7 +975,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cF4-ca-m9f"/>
+        <segue reference="geD-4T-d8f"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrowshape.right.fill" catalog="system" width="128" height="104"/>
@@ -983,14 +988,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemMintColor">
             <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="tintColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

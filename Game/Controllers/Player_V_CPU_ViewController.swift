@@ -7,7 +7,7 @@
 
 import UIKit
 let NAV_TO_GAME_FROM_CPU = "navToGameFromCPU"
-let NAV_TO_4x4_GAME = "toHardGame"
+let NAV_TO_4x4_GAME = "to4x4Game"
 class Player_V_CPU_ViewController: UIViewController {
     @IBOutlet weak var txtFiledName: UITextField!
     
@@ -27,13 +27,16 @@ class Player_V_CPU_ViewController: UIViewController {
                     destVC.playerXname = txtFiledName.text
                 }
                 destVC.currentGame.CPUon = true
+                destVC.hardMode = hardModeSwitch.isOn
+            }
+        }
+        if segue.identifier == NAV_TO_4x4_GAME {
+            if let destVC = segue.destination as? _x4GameViewController {
+            
+                destVC.currentGame.CPUon = true
                 print(hardModeSwitch.isOn)
                 destVC.hardMode = hardModeSwitch.isOn
-                /*if txtPlayerO.text != ""{
-                    destVC.playerOname = txtPlayerO.text
-                }*/
             }
         }
     }
-    
 }

@@ -73,8 +73,8 @@ class GameViewController: UIViewController {
         //If CPU (player vs CPU) has been selected the CPU will place next marker
         if currentGame.CPUon{
             //CPUmove will place a marker and return an Int to indicate were it placed the marker
-            let CPU_MARKER = hardMode ? currentGame.CPUplace() : currentGame.CPUplaceRandom()
-            boardImageViews[CPU_MARKER].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
+            let CPU_PLACEMENT = hardMode ? currentGame.CPUplace() : currentGame.CPUplaceRandom()
+            boardImageViews[CPU_PLACEMENT].image = (currentGame.currentSymbol == marker.X) ? UIImage(systemName: "xmark") : UIImage(systemName: "circle")
             updateTurnIndicator(playerXturn: currentGame.playerXturn)
             if currentGame.gameOver(){
                 showResult()

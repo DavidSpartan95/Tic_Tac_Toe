@@ -50,6 +50,7 @@ class Game:GameRules{
     }
     
     func CPUplace()-> Int{
+        
         let playerMarker:marker = playerXturn ? marker.O : marker.X
         let CPUmarker: marker = playerXturn ? marker.X : marker.O
         
@@ -100,7 +101,6 @@ class Game:GameRules{
             
             if numOfCurrentSymbol == squaresPerRow - 1, let spot = emptySpot {
                 let tag = indices[spot]
-                print("2 In a ROW! place at \(tag)")
                 currentSymbol = playerXturn ? marker.X : marker.O
                 placeMarker(tag: tag)
                 return tag
@@ -110,7 +110,7 @@ class Game:GameRules{
         }
         
         // Check horizontal and vertical rows
-        var wereOnBoard = [Int]()
+        _ = [Int]()
         for i in 0..<squaresPerRow {
             var horizontalIndices = [Int]()
             var verticalIndices = [Int]()

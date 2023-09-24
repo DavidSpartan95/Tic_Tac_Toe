@@ -27,6 +27,8 @@ class Player_V_CPU_ViewController: UIViewController {
                     destVC.playerXname = txtFiledName.text
                 }
                 destVC.currentGame.CPUon = true
+                print(hardModeSwitch.isOn)
+                destVC.hardMode = hardModeSwitch.isOn
                 /*if txtPlayerO.text != ""{
                     destVC.playerOname = txtPlayerO.text
                 }*/
